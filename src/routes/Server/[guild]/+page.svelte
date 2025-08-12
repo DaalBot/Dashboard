@@ -26,7 +26,7 @@
     };
 
     onMount(async() => {
-        const guildId = page.params.guild;
+        const guildId = page.params.guild ?? 'THIS_IS_BUGGED';
         const api = new DBAPI({
             auth: {
                 token: localStorage.getItem('accessToken') || '',
@@ -58,6 +58,9 @@
         <a href="/Server/{page.params.guild}/events">
             Events
         </a>
+        <a href="/Server/{page.params.guild}/monitoring/role-invites"> <!-- This would probably be better under "Monitoring" but im trying to keep things even -->
+            Role Invites
+        </a>
     </div>
     <h3>XP</h3>
     <div class="group">
@@ -73,10 +76,9 @@
         <a href="/Server/{page.params.guild}/monitoring/logs">
             Logs
         </a>
-        <!-- Soon 👀 -->
-        <!-- <a href="/Server/{page.params.guild}/monitoring/invites">
+        <a href="/Server/{page.params.guild}/monitoring/invites">
             Invite Tracking
-        </a> -->
+        </a>
     </div>
     <h3>Tools</h3>
     <div class="group">
