@@ -4,13 +4,13 @@
     import { sendMessage, getCurrentGuild } from '@daalbot/api/dist/src/modules';
     import { DBAPI } from '@daalbot/api';
     import type { CurrentGuildResponse } from '@daalbot/api/dist/src/modules/currentGuild';
-    import { browser } from '$app/environment';
     import { MessageFlags } from 'discord-api-types/v10';
+    import { browser } from '$app/environment';
 
     let api: DBAPI;
     let channels: NonNullable<CurrentGuildResponse['channels']> = [];
     let channelId = '';
-    let data = JSON.parse(decodeURIComponent(atob(page.url.searchParams.get('json') ?? btoa('{}'))));
+    let data = JSON.parse(decodeURIComponent(page.url.hash.split('json=')[1] || '%5B%5D' /*<- []*/));
 
     onMount(async() => {
         const guildId = page.params.guild;
@@ -19,7 +19,7 @@
                 token: localStorage.getItem('accessToken') || '',
                 type: 'User'
             },
-            guildId
+            guildId: guildId ?? ''
         });
 
         try {
@@ -44,13 +44,14 @@
 </select>
 
 <h2>Actions</h2>
-<a href={`https://hex.daalbot.xyz/components?min=1&redir=${encodeURIComponent(page.url.href)}`} class="button">
+<a href={`https://hex.daalbot.xyz/components?min=1&redir=${encodeURIComponent(`${page.url.protocol}//${page.url.host}${page.url.pathname}`)}${page.url.hash}`} class="button">
     Edit using Hex (visual)
 </a>
 <!-- svelte-ignore a11y_invalid_attribute - I know this should really be a button -->
 <a href="javascript:void(0);" class="button" on:click={() => {
+    if (!browser) return;
     data = JSON.parse(prompt('Enter your custom JSON:', JSON.stringify(data)) || JSON.stringify(data));
-    window.location.search = `?json=${encodeURIComponent(btoa(JSON.stringify(data)))}`;
+    window.location.hash = `#json=${encodeURIComponent(JSON.stringify(data))}`;
 }}>
     Input custom JSON (advanced)
 </a>

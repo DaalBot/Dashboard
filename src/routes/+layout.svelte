@@ -39,6 +39,11 @@
 
         // If the user is logged out and isnt on the api page, redirect to discord login
         if (!localStorage.getItem('accessToken') && !page.url.pathname.includes('/api')) {
+            if (import.meta.env.DEV) {
+                console.log('DEV: Redirecting to dev_authURL');
+                window.location.href = config.dev_authURL;
+                return;
+            }
             window.location.href = config.authURL;
         }
 
