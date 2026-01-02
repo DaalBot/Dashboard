@@ -21,7 +21,7 @@
                 token: localStorage.getItem('accessToken') || '', 
                 type: 'User' 
             },
-            guildId: page.params.guild
+            guildId: page.params.guild!
         });
 
         events = await modules.getEvents(api);
