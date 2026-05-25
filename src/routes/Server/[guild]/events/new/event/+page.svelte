@@ -26,7 +26,7 @@
             guildId: page.params.guild
         });
 
-        validTriggers = await fetch('https://cdn.jsdelivr.net/gh/DaalBot/API@ts-rewrite/config/events.json')
+        validTriggers = await fetch('https://cdn.jsdelivr.net/gh/DaalBot/API/config/events.json')
             .then(res => res.json())
             .then(data => data.event_types);
 
